@@ -6,7 +6,10 @@ var AppRouter = Backbone.Router.extend({
         "wines/page/:page"	: "list",
         "wines/add"         : "addWine",
         "wines/:id"         : "wineDetails",
-        "about"             : "about"
+        "about"             : "about",
+        "cagos"             : "listc",
+        "cagos/page/:page"  : "listc",
+        "cagos/add"         : "addCargo"
     },
 
     initialize: function () {
@@ -33,7 +36,19 @@ var AppRouter = Backbone.Router.extend({
         });
         this.headerView.selectMenuItem('home-menu');
     },
-
+//list cargo#######################################
+    listc: function(page) {
+        var p = page ? parseInt(page, 10) : 1;
+        var cargoList = new CargoCollection();
+        cargoList.fetch({
+            data: {'page': p, 'items': 8},
+            success: function(){
+                $("#content").html(new CargoListView({model: cargoList, page: p}).el);
+            }
+        });
+        this.headerView.selectMenuItem('home-menu');
+    },
+    
     wineDetails: function (id) {
         var wine = new Wine({id: id});
         wine.fetch({success: function(){
@@ -41,10 +56,24 @@ var AppRouter = Backbone.Router.extend({
         }});
         this.headerView.selectMenuItem();
     },
-
+//ver cargo #######################################
+     cargoDetails: function (id) {
+        var cargo = new Cargo({id: id});
+        cargo.fetch({success: function(){
+            $("#content").html(new CargoView({model: cargo}).el);
+        }});
+        this.headerView.selectMenuItem();
+    },
+    
 	addWine: function() {
         var wine = new Wine();
         $('#content').html(new WineView({model: wine}).el);
+        this.headerView.selectMenuItem('add-menu');
+	},
+//add cargo #######################################
+    addCargo: function() {
+        var cargo = new Cargo();
+        $('#content').html(new CargoView({model: cargo}).el);
         this.headerView.selectMenuItem('add-menu');
 	},
 
@@ -58,7 +87,7 @@ var AppRouter = Backbone.Router.extend({
 
 });
 
-utils.loadTemplate(['HomeView', 'HeaderView', 'WineView', 'WineListItemView', 'AboutView'], function() {
+utils.loadTemplate(['HomeView', 'HeaderView', 'CargoView', 'CargoListItemView', 'AboutView'], function() {
     app = new AppRouter();
     Backbone.history.start();
 });

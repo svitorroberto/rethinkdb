@@ -3,7 +3,8 @@ var express = require('express'),
     http = require('http'),
     util = require('util'),
     rdb = require('rethinkdb'),
-    wine = require('./routes/wines');
+    cargo = require('./routes/cargos');
+//  wine = require('./routes/cargos');
 
 var app = express();
 
@@ -14,18 +15,25 @@ app.configure(function () {
     app.use(express.static(path.join(__dirname, 'public')));
 });
 
-app.get('/wines', wine.findAll);
-app.get('/wines/:id', wine.findById);
-app.post('/wines', wine.addWine);
-app.put('/wines/:id', wine.updateWine);
-app.delete('/wines/:id', wine.deleteWine);
+//app.get('/wines', wine.findAll);
+//app.get('/wines/:id', wine.findById);
+//app.post('/wines', wine.addWine);
+//app.put('/wines/:id', wine.updateWine);
+//app.delete('/wines/:id', wine.deleteWine);
+
+app.get('/cargos', cargo.findAll);
+app.get('/cargos/:id', cargo.findById);
+app.post('/cargos', cargo.addCargo);
+app.put('/cargos/:id', cargo.updateCargo);
+app.delete('/cargos/:id', cargo.deleteCargo);
 
 // #### RethinkDB connection details
 
 var dbConfig = {
   host : process.env.RDB_HOST || 'localhost',
   port : parseInt(process.env.RDB_PORT) || 28015,
-  db   : process.env.RDB_DB || 'winecellar',
+  db   : process.env.RDB_DB || 'cargo',
+//db   : process.env.RDB_DB || 'winecellar',
 };  
 
 // Using a single db connection for the app
@@ -36,11 +44,11 @@ rdb.connect({host: dbConfig.host, port: dbConfig.port}, function(err, connection
   }
   else {
     // set up the database
-    wine.setupDB(dbConfig, connection);
+    cargo.setupDB(dbConfig, connection);
     // set up the default database for the connection
     connection.use(dbConfig['db']);
     // set up the module global connection
-    wine.connection = connection;
+    cargo.connection = connection;
     // start serving requests
     http.createServer(app).listen(app.get('port'), function () {
       console.log("Express server listening on port " + app.get('port'));

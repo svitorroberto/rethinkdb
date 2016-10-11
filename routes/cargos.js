@@ -28,7 +28,7 @@ exports.findById = function (req, res) {
     var id = req.params.id;
     debug('findById: %s', id);
 
-    r.table('wines').get(id).run(self.connection, function(err, result) {
+    r.table('cargos').get(id).run(self.connection, function(err, result) {
         if(err) {
             debug("[ERROR] findById: %s:%s\n%s", err.name, err.msg, err.message);
         }
@@ -54,7 +54,7 @@ exports.findById = function (req, res) {
  * _Pull requests are welcome!_
  */
 exports.findAll = function (req, res) {
-    r.table('wines').run(self.connection, function(err, cursor) {
+    r.table('cargos').run(self.connection, function(err, cursor) {
         cursor.toArray(function(err, results) {
             if(err) {
                 debug("[ERROR] %s:%s\n%s", err.name, err.msg, err.message);
@@ -80,21 +80,21 @@ exports.findAll = function (req, res) {
  * of successfully created objects and their corresponding IDs:
  * `{ "inserted": 1, "errors": 0, "generated_keys": ["b3426201-5767-6036-4a21-99921974ab84"] }`
  */
-exports.addWine = function (req, res) {
-	var wine = req.body;
+exports.addCargo = function (req, res) {
+	var cargo = req.body;
     // workaround for https://github.com/rethinkdb/rethinkdb/issues/498
-    delete wine.id;
-	debug('Adding wine: %j', wine);
+    delete cargo.id;
+	debug('Adicionando Cargo: %j', cargo);
 
-    r.table('wines').insert(wine).run(self.connection, function(err, result) {
+    r.table('cargos').insert(cargo).run(self.connection, function(err, result) {
         if(err) {
-            debug("[ERROR] addWine %s:%s\n%s", err.name, err.msg, err.message);
-            res.send({error: 'An error occurred when adding the new wine (' + err.msg + ')'})
+            debug("[ERROR] addCargo %s:%s\n%s", err.name, err.msg, err.message);
+            res.send({error: 'Erro adding the new cargo (' + err.msg + ')'})
         }
         else {
             if(result && result.inserted === 1) {
-                wine.id = result.generated_keys[0];
-                res.send(wine);
+                cargo.id = result.generated_keys[0];
+                res.send(cargo);
             }
             else {
                 debug("[ERROR] Failed to create new wine record: %j (%j)", wine, result);
@@ -115,21 +115,21 @@ exports.addWine = function (req, res) {
  * Chained operations are always executed in the database and 
  * _not on the client side_.
  */
-exports.updateWine = function (req, res) {
-    var id = req.params.id, wine = req.body;
-    wine.id = id;
-    debug('Updating wine: %j', wine);
+exports.updateCargo = function (req, res) {
+    var id = req.params.id, cargo = req.body;
+    cargo.id = id;
+    debug('Updating cargo: %j', cargo);
 
-    r.table('wines').get(id).update(wine).run(self.connection, function(err, result) {
+    r.table('cargos').get(id).update(cargo).run(self.connection, function(err, result) {
         if(result && result.replaced === 1) {
-            res.send(wine);
+            res.send(cargo);
         }
         else if(err) {
-            debug("[ERROR] updateWine %s:%s\n%s", err.name, err.msg, err.message);
+            debug("[ERROR] updatCargo %s:%s\n%s", err.name, err.msg, err.message);
             res.send({error: 'An error occurred when updating the wine with id: ' + id});
         }
         else {
-            debug("[ERROR] updateWine (%s): %j", id, result);
+            debug("[ERROR] updateCargo (%s): %j", id, result);
             res.send({error: 'An error occurred when updating the wine with id: ' + id});
         }
     });
@@ -146,11 +146,11 @@ exports.updateWine = function (req, res) {
  * ReQL chained operations are executed together in the database and 
  * they return the final result. There is a single database roundtrip.
  */
-exports.deleteWine = function (req, res) {
+exports.deleteCargo = function (req, res) {
     var id = req.params.id;
-    debug('Deleting wine: %s', id);
+    debug('Deleting cargo: %s', id);
 
-    r.table('wines').get(id).delete().run(self.connection, function(err, result) {
+    r.table('Cargo').get(id).delete().run(self.connection, function(err, result) {
         debug("[ERROR] deleteWine %j, %j", err, result);
         if(err) {
             debug("[ERROR] deleteWine %s:%s\n%s", err.name, err.msg, err.message);
@@ -181,7 +181,7 @@ exports.deleteWine = function (req, res) {
  * You'd typically not find this code in a real-life app, since the database would already exist.
  */
 exports.setupDB = function(dbConfig, connection) {
-	var wines = [
+	var Wine = [
     {
         name: "CHATEAU DE SAINT COSME",
         year: "2009",

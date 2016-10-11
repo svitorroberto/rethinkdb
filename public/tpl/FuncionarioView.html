@@ -1,0 +1,127 @@
+<div class="row-fluid">
+
+    <form class="form-horizontal span12">
+
+        <fieldset>
+
+            <legend>Detalhes do Vinho</legend>
+            <br/>
+
+            <div class="row">
+                <div class="span8">
+
+                    <div class="control-group">
+                        <label for="wineId" class="control-label">Id:</label>
+
+                        <div class="controls">
+                            <input id="wineId" name="id" type="text" value="<%= id === null ? '' : id %>"
+                                   disabled/>
+                        </div>
+                    </div>
+
+                    <div class="control-group">
+                        <label for="nome" class="control-label">Nome:</label>
+
+                        <div class="controls">
+                            <input type="text" id="nome" name="nome" value="<%= func_nome %>"/>
+                            <span class="help-inline"></span>
+                        </div>
+                    </div>
+
+                    <div class="control-group">
+                        <label for="cpf" class="control-label">CPF:</label>
+
+                        <div class="controls">
+                            <input type="text" id="cpf" name="cpf" value="<%= func_cpf %>"/>
+                            <span class="help-inline"></span>
+                        </div>
+                    </div>
+                    
+                    <div class="control-group">
+                        <label for="nasc" class="control-label">Data de Nascimento:</label>
+
+                        <div class="controls">
+                            <input type="text" id="nasc" name="nasc" value="<%= func_dt_nascimento %>"/>
+                            <span class="help-inline"></span>
+                        </div>
+                    </div>
+                    
+                    <div class="control-group">
+                        <label for="dpto" class="control-label">Departamento:</label>
+
+                        <div class="controls">
+                            <input type="text" id="dpto" name="dpto" value="<%= func_depto %>"/>
+                            <span class="help-inline"></span>
+                        </div>
+                    </div>
+                    
+                    <div class="control-group">
+                        <label for="contrat" class="control-label">Data de Contratação:</label>
+
+                        <div class="controls">
+                            <input type="text" id="contrat" name="contrat" value="<%= func_dt_contratacao %>"/>
+                            <span class="help-inline"></span>
+                        </div>
+                    </div>
+                    
+                    <div class="control-group">
+                        <label for="salario" class="control-label">Salário:</label>
+
+                        <div class="controls">
+                            <input type="text" id="salario" name="salario" value="<%= func_salario %>"/>
+                            <span class="help-inline"></span>
+                        </div>
+                    </div>
+                    
+                    <div class="control-group">
+                        <label for="cargo" class="control-label">Cargo:</label>
+
+                        <div class="controls">
+                            <select class="input-small" id="cargo" name="cargo" value="<%= func_cargo %>">
+                                <option
+                                <%= cargo == ANALISTA FINANCEIRO'?'selected':'' %>>ANALISTA FINANCEIRO'</option>
+                                <option
+                                <%= cargo == AUXILIAR ADMINISTRATIVO?'selected':'' %>>AUXILIAR ADMINISTRATIVO</option>
+                                <option
+                                <%= cargo == PSICOLOGIA?'selected':'' %>>PSICOLOGIA</option>
+                                <option
+                                <%= cargo == ASSISTENTE DE RECRUTAMENTO?'selected':'' %>>ASSISTENTE DE RECRUTAMENTO</option>
+                                <option
+                                <%= cargo == CONTROLER?'selected':'' %>>CONTROLER</option>
+                                <option
+                                <%= cargo == CONTADOR?'selected':'' %>>CONTADOR</option>
+                            </select>
+                        </div>
+                    </div>
+      
+
+
+                </div>
+
+                <div class="span4">
+                    <div class="well" style="width: 180px;text-align: center;width:50%;margin: 0px auto;">
+                        <p><img id="picture" width="180" src="<%= picture === null ? 'pics/generic.jpg' : 'pics/' + picture %>"/></p>
+                        <p style="color:#999;">To change the picture, drag a new picture from your file system onto the box above.</p>
+                    </div>
+                </div>
+
+            </div>
+
+        </fieldset>
+
+        <div class="form-actions">
+            <a href="#" class="btn btn-primary save">Save</a>
+            <a href="#" class="btn delete">Delete</a>
+        </div>
+
+    </form>
+
+</div>
+
+<div class="row-fluid status-bar">
+    <div class="span12">
+        <div class="alert alert-success" style="display: none">
+            <b>Success!</b> Wine saved successfully
+        </div>
+    </div>
+</div>
